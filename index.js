@@ -5,8 +5,9 @@ import { stdin, stdout, stderr } from 'process';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import { parseArgs } from './modules/args.mjs';
-import { list } from './modules/list.mjs';
-import { up } from './modules/up.mjs';
+import { list } from './modules/commands/list.mjs';
+import { up } from './modules/commands/up.mjs';
+import { cd } from './modules/commands/cd.mjs';
 
 const userName = parseArgs();
 const __filename = fileURLToPath(import.meta.url);
@@ -16,7 +17,8 @@ let currentDir = __dirname;
 
 const messageHello = `Welcome to the File Manager, ${userName}!\n`;
 const messageBye = `Thank you for using File Manager, ${userName}!\n`;
-let currentDirMsg = () => {
+
+const currentDirMsg = () => {
     stdout.write(`You are currently in ${currentDir} \n`);
 };
 
@@ -44,13 +46,11 @@ rl.on('line', async function (line) {
     switch (command) {
         case 'up':
             currentDir = await up(currentDir);
-            console.log(currentDir);
             break;
         case 'cd':
-            // todo cd
+            currentDir = await cd(currentDir, arg1);
             break;
         case 'ls':
-            // todo ls
             await list(currentDir);
             break;
         case 'cat':
