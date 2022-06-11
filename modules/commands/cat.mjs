@@ -1,5 +1,5 @@
 import { join } from 'path';
-import { readFile } from 'fs/promises';
+import { createReadStream } from 'fs';
 import { checkFileExists } from '../checkFileExists.mjs';
 import { messageFailed } from '../messages.mjs';
 
@@ -11,16 +11,9 @@ export const cat = async (currentDir, file) => {
 };
 
 const catFile = async (file) => {
-    try {
-        if (await checkFileExists(file)) {
-            let data;
-            data = await readFile(file);
-
-            console.log(data.toString());
-        } else {
-            messageFailed();
-        }
-    } catch (error) {
-        messageFailed();
-    }
+    const stream = createReadStream(file, 'utf-8');
+    let data = '';
+    stream.on('data', (chunk) => (data += chunk));
+    stream.on('end', () => process.stdout.write(data + '\n'));
+    stream.on('error', (error) => messageFailed());
 };
