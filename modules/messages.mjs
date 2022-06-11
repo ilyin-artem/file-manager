@@ -1,6 +1,6 @@
 export const messageFailed = () => {
     console.log('Operation failed');
 };
-export const messageFileCreated = (fileName) => {
-    console.log(`File has been created ${fileName}`);
+export const messageFileSuccess = (verb, fileName) => {
+    console.log(`File has been ${verb} ${fileName}`);
 };

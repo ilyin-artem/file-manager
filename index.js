@@ -11,6 +11,7 @@ import { up } from './modules/commands/up.mjs';
 import { cd } from './modules/commands/cd.mjs';
 import { cat } from './modules/commands/cat.mjs';
 import { add } from './modules/commands/add.mjs';
+import { rn } from './modules/commands/rn.mjs';
 
 const userName = parseArgs();
 const __filename = fileURLToPath(import.meta.url);
@@ -66,7 +67,7 @@ rl.on('line', async function (line) {
             await add(currentDir, arg1);
             break;
         case 'rn':
-            // todo rename
+            await rn(currentDir, arg1, arg2);
             break;
         case 'cp':
             // todo copy

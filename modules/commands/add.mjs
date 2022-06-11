@@ -1,7 +1,7 @@
 import { join } from 'path';
 import { createWriteStream } from 'fs';
 // import { checkFileExists } from '../checkFileExists.mjs';
-import { messageFailed, messageFileCreated } from '../messages.mjs';
+import { messageFailed, messageFileSuccess } from '../messages.mjs';
 import { stdin } from 'process';
 
 export const add = async (currentDir, file) => {
@@ -15,9 +15,8 @@ const createFile = async (file) => {
         stdin.on('data', (chunk) => {
             writingStream.write(chunk);
         });
-        messageFileCreated(file);
+        messageFileSuccess('created', file);
     } catch (error) {
         messageFailed();
-        пш;
     }
 };
