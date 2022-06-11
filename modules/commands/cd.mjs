@@ -1,16 +1,13 @@
 import { join } from 'path';
-import { access } from 'fs/promises';
-import { constants } from 'node:fs';
 import { messageFailed } from '../messages.mjs';
-
-const checkFileExists = async (file) => {
-    return await access(file, constants.F_OK)
-        .then(() => true)
-        .catch(() => false);
-};
+import { checkFileExists } from '../checkFileExists.mjs';
 
 export const cd = async (currentDir, path) => {
-    const newPath = join(currentDir, path);
+    const newPath =
+        (await checkFileExists(path)) && path !== '..' && path !== '.'
+            ? path
+            : join(currentDir, path);
+
     if (await checkFileExists(newPath)) return newPath;
     messageFailed();
     return currentDir;

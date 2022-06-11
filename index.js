@@ -4,10 +4,13 @@ import readline from 'readline';
 import { stdin, stdout, stderr } from 'process';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
+
 import { parseArgs } from './modules/args.mjs';
 import { list } from './modules/commands/list.mjs';
 import { up } from './modules/commands/up.mjs';
 import { cd } from './modules/commands/cd.mjs';
+import { cat } from './modules/commands/cat.mjs';
+import { add } from './modules/commands/add.mjs';
 
 const userName = parseArgs();
 const __filename = fileURLToPath(import.meta.url);
@@ -26,6 +29,7 @@ stdout.write(messageHello);
 currentDirMsg();
 
 const ws = createWriteStream(fileName).on('error', (err) => console.log(err));
+
 const rl = readline
     .createInterface({
         input: stdin,
@@ -39,6 +43,7 @@ rl.on('line', async function (line) {
     const command = commandArr[0];
     const arg1 = commandArr[1];
     const arg2 = commandArr[2];
+    //todo Сделать проверку на аргумент в кавычках e.g. "Programm files"
     // console.log(command);
     // console.log(commandArr.length);
     // console.log(arg1);
@@ -48,16 +53,17 @@ rl.on('line', async function (line) {
             currentDir = await up(currentDir);
             break;
         case 'cd':
+            //todo add abosoulute path
             currentDir = await cd(currentDir, arg1);
             break;
         case 'ls':
             await list(currentDir);
             break;
         case 'cat':
-            // todo cat
+            await cat(currentDir, arg1);
             break;
         case 'add':
-            // todo add
+            await add(currentDir, arg1);
             break;
         case 'rn':
             // todo rename

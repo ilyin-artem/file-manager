@@ -1,11 +1,2 @@
-up
-up
-up
-up
-up
-up
-up
-up
-cd df
-cd temp
-ls
+add temp.txt
+add d:\temp\file.txt
