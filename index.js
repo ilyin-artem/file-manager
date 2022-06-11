@@ -1,22 +1,27 @@
-import { parseArgs } from './modules/args.mjs';
 import { createWriteStream } from 'fs';
 import process from 'process';
 import readline from 'readline';
 import { stdin, stdout, stderr } from 'process';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
+import { parseArgs } from './modules/args.mjs';
+import { list } from './modules/list.mjs';
+import { up } from './modules/up.mjs';
 
 const userName = parseArgs();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const fileName = join(__dirname, './coomands.log');
+const fileName = join(__dirname, './commands.log');
+let currentDir = __dirname;
 
 const messageHello = `Welcome to the File Manager, ${userName}!\n`;
 const messageBye = `Thank you for using File Manager, ${userName}!\n`;
-const currenDir = `You are currently in ${__dirname} \n`;
+let currentDirMsg = () => {
+    stdout.write(`You are currently in ${currentDir} \n`);
+};
 
 stdout.write(messageHello);
-stdout.write(currenDir);
+currentDirMsg();
 
 const ws = createWriteStream(fileName).on('error', (err) => console.log(err));
 const rl = readline
@@ -27,16 +32,26 @@ const rl = readline
     })
     .on('error', (err) => console.log(err));
 
-rl.on('line', function (line) {
-    switch (line.toLowerCase()) {
+rl.on('line', async function (line) {
+    const commandArr = line.split(' ');
+    const command = commandArr[0];
+    const arg1 = commandArr[1];
+    const arg2 = commandArr[2];
+    // console.log(command);
+    // console.log(commandArr.length);
+    // console.log(arg1);
+    // console.log(arg2);
+    switch (command) {
         case 'up':
-            // todo up
+            currentDir = await up(currentDir);
+            console.log(currentDir);
             break;
         case 'cd':
             // todo cd
             break;
         case 'ls':
             // todo ls
+            await list(currentDir);
             break;
         case 'cat':
             // todo cat
@@ -81,9 +96,7 @@ rl.on('line', function (line) {
             console.log('Invalid input');
             break;
     }
-    // if (line.toLowerCase() === '.exit') {
-    //     process.exit();
-    // }
+    currentDirMsg();
     ws.write(`${line}\n`);
 });
 
