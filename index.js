@@ -11,10 +11,10 @@ import { doCommand } from './modules/doCommand.mjs';
 const userName = parseArgs();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const fileName = join(__dirname, './commands.log');
+// const fileName = join(__dirname, './commands.log');
 let currentDir = __dirname;
 
-const messageHello = `Welcome to the File Manager, ${userName}!${EOL}`;
+const messageHello = `Welcome to the File Manager, ${userName}!${EOL}${EOL}`;
 const messageBye = `Thank you for using File Manager, ${userName}!${EOL}`;
 
 const currentDirMsg = () => {
@@ -24,7 +24,7 @@ const currentDirMsg = () => {
 stdout.write(messageHello);
 currentDirMsg();
 
-const ws = createWriteStream(fileName).on('error', (err) => console.log(err));
+// const ws = createWriteStream(fileName).on('error', (err) => console.log(err));
 
 const rl = readline
     .createInterface({
@@ -46,7 +46,7 @@ rl.on('line', async function (line) {
     // console.log(arg2);
     currentDir = await doCommand(command, currentDir, arg1, arg2);
     currentDirMsg();
-    ws.write(`${line}${EOL}`);
+    // ws.write(`${line}${EOL}`);
 });
 
 process.on('SIGINT', () => {

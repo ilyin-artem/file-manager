@@ -1,7 +1,7 @@
 import { createReadStream, createWriteStream } from 'fs';
 import { join, dirname, isAbsolute, parse } from 'path';
 import { checkFileExists } from '../checkFileExists.mjs';
-import { createGzip } from 'zlib';
+import { createBrotliCompress } from 'zlib';
 import { messageFailed, messageFileSuccess } from '../messages.mjs';
 import { isDirectory } from '../isDirectory.mjs';
 
@@ -10,6 +10,11 @@ export const compress = async (
     fileSource,
     fileTarget = currentDir
 ) => {
+    if (await isAbsolute(fileSource)) {
+        fileTarget = join(dirname(fileSource), fileTarget);
+    } else {
+        fileSource = join(currentDir, fileSource);
+    }
     if (
         !(await checkFileExists(fileSource)) ||
         (await isDirectory(fileSource)) ||
@@ -18,24 +23,19 @@ export const compress = async (
         messageFailed();
         return;
     }
-    if (await isAbsolute(fileSource)) {
-        fileTarget = join(dirname(fileSource), fileTarget);
-    } else {
-        fileSource = join(currentDir, fileSource);
-    }
 
-    await compressGzip(fileSource, fileTarget);
+    await compressBrotli(fileSource, fileTarget);
 };
 
-const compressGzip = async (fileSource, fileTarget) => {
+const compressBrotli = async (fileSource, fileTarget) => {
     const inputFilePath = join(fileSource);
-    const outputFilePath = join(fileTarget, parse(fileSource).base + '.gz');
+    const outputFilePath = join(fileTarget, parse(fileSource).base + '.br');
 
     const readable = createReadStream(inputFilePath);
     const writable = createWriteStream(outputFilePath);
     try {
         if (!(await isDirectory(fileTarget))) throw 'Dest not directory';
-        await readable.pipe(createGzip()).pipe(writable);
+        await readable.pipe(createBrotliCompress()).pipe(writable);
         messageFileSuccess('compressed', outputFilePath);
     } catch (error) {
         messageFailed();
