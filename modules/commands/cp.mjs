@@ -24,7 +24,7 @@ export const cp = async (currentDir, fileSource, fileTarget) => {
 const copyFiles = async (folderSource, folderTarget) => {
     let sourceFile;
     let targetFile;
-    let check;
+
     try {
         if (await isDirectory(folderSource)) {
             if (!(await checkFileExists(folderTarget)))
@@ -40,9 +40,8 @@ const copyFiles = async (folderSource, folderTarget) => {
                 createReadStream(sourceFile).pipe(
                     createWriteStream(targetFile)
                 );
+                messageFileSuccess('copied', targetFile);
             }
-
-            messageFileSuccess('copied', folderSource);
         } else {
             // if file
             if (await isDirectory(folderTarget)) {
@@ -52,7 +51,7 @@ const copyFiles = async (folderSource, folderTarget) => {
                 await createReadStream(folderSource).pipe(
                     createWriteStream(targetFile)
                 );
-                messageFileSuccess('copied', folderSource);
+                messageFileSuccess('copied', targetFile);
             } else {
                 messageFailed();
             }
