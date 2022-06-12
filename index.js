@@ -4,6 +4,7 @@ import readline from 'readline';
 import { stdin, stdout, stderr } from 'process';
 import { parseArgs } from './modules/args.mjs';
 import { doCommand } from './modules/doCommand.mjs';
+import { messageFailed } from './modules/messages.mjs';
 
 const userName = parseArgs();
 
@@ -28,21 +29,29 @@ const rl = readline
         output: stdout,
         terminal: false,
     })
-    .on('error', (err) => console.log(err));
+    .on('error', () => messageFailed());
 
 rl.on('line', async function (line) {
-    const commandArr = line.split(' ');
-    const command = commandArr[0];
-    const arg1 = commandArr[1];
-    const arg2 = commandArr[2];
-    //todo Сделать проверку на аргумент в кавычках e.g. "Programm files"
-    // console.log(command);
-    // console.log(commandArr.length);
-    // console.log(arg1);
-    // console.log(arg2);
-    currentDir = await doCommand(command, currentDir, arg1, arg2);
-    currentDirMsg();
-    // ws.write(`${line}${EOL}`);
+    try {
+        const commandArr = line.match(/(?:[^\s"']+|['"][^'"]*["'])+/g);
+        if (!commandArr) throw 'err';
+
+        const command = commandArr[0];
+
+        const arg1 = commandArr[1]
+            ? commandArr[1].replace(/^["'](.+(?=["']$))["']$/, '$1')
+            : undefined;
+
+        const arg2 = commandArr[2]
+            ? commandArr[2].replace(/^["'](.+(?=["']$))["']$/, '$1')
+            : undefined;
+
+        currentDir = await doCommand(command, currentDir, arg1, arg2);
+        currentDirMsg();
+    } catch (error) {
+        console.log('Invalid input');
+        currentDirMsg();
+    }
 });
 
 process.on('SIGINT', () => {
