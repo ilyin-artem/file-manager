@@ -1,12 +1,11 @@
-import { join } from 'path';
+import { join, isAbsolute } from 'path';
 import { createReadStream } from 'fs';
-import { checkFileExists } from '../checkFileExists.mjs';
 import { messageFailed } from '../messages.mjs';
+import { isDirectory } from '../isDirectory.mjs';
 
 export const cat = async (currentDir, file) => {
-    const FileName = (await checkFileExists(file))
-        ? file
-        : join(currentDir, file);
+    const FileName = (await isAbsolute(file)) ? file : join(currentDir, file);
+    if (await isDirectory(FileName)) messageFailed();
     await catFile(FileName);
 };
 

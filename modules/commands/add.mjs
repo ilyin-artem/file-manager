@@ -1,6 +1,5 @@
 import { join } from 'path';
 import { createWriteStream } from 'fs';
-// import { checkFileExists } from '../checkFileExists.mjs';
 import { messageFailed, messageFileSuccess } from '../messages.mjs';
 import { stdin } from 'process';
 

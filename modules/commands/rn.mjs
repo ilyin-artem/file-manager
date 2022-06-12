@@ -1,10 +1,10 @@
 import { rename } from 'fs/promises';
-import { join, dirname } from 'path';
+import { join, dirname, isAbsolute } from 'path';
 import { checkFileExists } from '../checkFileExists.mjs';
 import { messageFailed, messageFileSuccess } from '../messages.mjs';
 
 export const rn = async (currentDir, fileSource, fileTarget) => {
-    if (await checkFileExists(fileSource)) {
+    if (await isAbsolute(fileSource)) {
         fileTarget = join(dirname(fileSource), fileTarget);
         renameFile(fileSource, fileTarget);
     } else {

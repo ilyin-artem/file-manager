@@ -1,3 +1,2 @@
-ls
-rn test1.txt test2.txt
-rn d:\temp\test3.txt test4.txt
+cp test4.txt 1
+cp test4.txt 1

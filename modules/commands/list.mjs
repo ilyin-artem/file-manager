@@ -1,6 +1,5 @@
-import { dirname, resolve } from 'path';
-import { fileURLToPath } from 'url';
-import { readdir } from 'node:fs/promises';
+import { readdir } from 'fs/promises';
+import { messageFailed } from '../messages.mjs';
 
 export const list = async (currentDir) => {
     try {
@@ -9,6 +8,6 @@ export const list = async (currentDir) => {
         for (const file of files) filesNames.push(file);
         console.log(filesNames);
     } catch (err) {
-        throw new Error('FS operation failed');
+        messageFailed();
     }
 };

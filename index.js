@@ -4,14 +4,8 @@ import readline from 'readline';
 import { stdin, stdout, stderr } from 'process';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
-
 import { parseArgs } from './modules/args.mjs';
-import { list } from './modules/commands/list.mjs';
-import { up } from './modules/commands/up.mjs';
-import { cd } from './modules/commands/cd.mjs';
-import { cat } from './modules/commands/cat.mjs';
-import { add } from './modules/commands/add.mjs';
-import { rn } from './modules/commands/rn.mjs';
+import { doCommand } from './modules/doCommand.mjs';
 
 const userName = parseArgs();
 const __filename = fileURLToPath(import.meta.url);
@@ -49,60 +43,7 @@ rl.on('line', async function (line) {
     // console.log(commandArr.length);
     // console.log(arg1);
     // console.log(arg2);
-    switch (command) {
-        case 'up':
-            currentDir = await up(currentDir);
-            break;
-        case 'cd':
-            //todo add abosoulute path
-            currentDir = await cd(currentDir, arg1);
-            break;
-        case 'ls':
-            await list(currentDir);
-            break;
-        case 'cat':
-            await cat(currentDir, arg1);
-            break;
-        case 'add':
-            await add(currentDir, arg1);
-            break;
-        case 'rn':
-            await rn(currentDir, arg1, arg2);
-            break;
-        case 'cp':
-            // todo copy
-            break;
-        case 'mv':
-            // todo mv
-            break;
-        case 'rm':
-            // todo remove
-            break;
-        case 'os':
-            // todo os
-            // todo os --EOL Get EOL (default system End-Of-Line)
-            // todo os --cpus Get host machine CPUs info (overall amount of CPUS plus model and clock rate (in GHz) for each of them)
-            // todo os --homedir Get home directory
-            // todo os --username Get current *system user name* (Do not confuse with the username that is set when the application starts)
-            // todo os --architecture Get CPU architecture for which Node.js binary has compiled
-            break;
-        case 'hash':
-            // todo hash path_to_file Calculate hash for file and print it into console
-            break;
-        case 'compress':
-            // todo compress path_to_file path_to_destination
-            break;
-        case 'decompress':
-            // todo decompress path_to_file path_to_destination
-            break;
-        case '.exit':
-            process.exit();
-            break;
-
-        default:
-            console.log('Invalid input');
-            break;
-    }
+    currentDir = await doCommand(command, currentDir, arg1, arg2);
     currentDirMsg();
     ws.write(`${line}\n`);
 });
