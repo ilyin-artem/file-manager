@@ -6,6 +6,7 @@ import { add } from './commands/add.mjs';
 import { rn } from './commands/rn.mjs';
 import { cp } from './commands/cp.mjs';
 import { mv } from './commands/mv.mjs';
+import { rm } from './commands/rm.mjs';
 export const doCommand = async (command, currentDir, arg1, arg2) => {
     switch (command) {
         case 'up':
@@ -34,7 +35,7 @@ export const doCommand = async (command, currentDir, arg1, arg2) => {
             await mv(currentDir, arg1, arg2);
             break;
         case 'rm':
-            // todo remove
+            await rm(currentDir, arg1);
             break;
         case 'os':
             // todo os

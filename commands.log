@@ -1,2 +1,6 @@
-cp 1 2
-mv 1 2
+ls
+add 1.txt
+ls
+rm 1.txt
+rm 2.txt
+rm 1

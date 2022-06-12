@@ -41,7 +41,7 @@ const moveFiles = async (folderSource, folderTarget) => {
                     createWriteStream(targetFile)
                 );
                 await unlink(sourceFile);
-                messageFileSuccess('moved', folderSource);
+                messageFileSuccess('moved', sourceFile);
             }
         } else {
             // if file
