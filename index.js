@@ -1,18 +1,14 @@
-import { createWriteStream } from 'fs';
-import { EOL } from 'os';
+import { EOL, homedir } from 'os';
 import process from 'process';
 import readline from 'readline';
 import { stdin, stdout, stderr } from 'process';
-import { dirname, join } from 'path';
-import { fileURLToPath } from 'url';
 import { parseArgs } from './modules/args.mjs';
 import { doCommand } from './modules/doCommand.mjs';
 
 const userName = parseArgs();
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+
 // const fileName = join(__dirname, './commands.log');
-let currentDir = __dirname;
+let currentDir = homedir();
 
 const messageHello = `Welcome to the File Manager, ${userName}!${EOL}${EOL}`;
 const messageBye = `Thank you for using File Manager, ${userName}!${EOL}`;

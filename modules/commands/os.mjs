@@ -23,7 +23,6 @@ const cpusConditional = async () => {
         console.log(
             `${idx + 1}. ${cpu.model} ${(cpu.speed / 1024).toFixed(1)}Ghz`
         );
-        // if (key[idx] == 'speed') console.log(cpu);
     });
 };
 const homedirConditional = async () => {

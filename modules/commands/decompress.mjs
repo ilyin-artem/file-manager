@@ -36,7 +36,11 @@ const decompressBrotli = async (fileSource, fileTarget) => {
     const writable = createWriteStream(outputFilePath);
 
     try {
-        if (!(await isDirectory(fileTarget))) throw 'Dest not directory';
+        if (
+            !(await isDirectory(fileTarget)) ||
+            (await checkFileExists(outputFilePath))
+        )
+            throw 'error';
         await readable.pipe(createBrotliDecompress()).pipe(writable);
         messageFileSuccess('decompressed', outputFilePath);
     } catch (error) {
