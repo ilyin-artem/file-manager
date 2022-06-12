@@ -20,9 +20,10 @@ const eolConditional = async () => {
 };
 const cpusConditional = async () => {
     cpus().forEach((cpu, idx) => {
-        for (const key in cpu) {
-            console.log(cpu);
-        }
+        console.log(
+            `${idx + 1}. ${cpu.model} ${(cpu.speed / 1024).toFixed(1)}Ghz`
+        );
+        // if (key[idx] == 'speed') console.log(cpu);
     });
 };
 const homedirConditional = async () => {
