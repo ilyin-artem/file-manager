@@ -9,6 +9,7 @@ import { cp } from './commands/cp.mjs';
 import { mv } from './commands/mv.mjs';
 import { rm } from './commands/rm.mjs';
 import { cmdOs as os } from './commands/os.mjs';
+import { hash } from './commands/hash.mjs';
 
 export const doCommand = async (command, currentDir, arg1, arg2) => {
     switch (command) {
@@ -41,16 +42,11 @@ export const doCommand = async (command, currentDir, arg1, arg2) => {
             await rm(currentDir, arg1);
             break;
         case 'os':
-            // todo os
             await os(arg1);
-            // todo os --EOL Get EOL (default system End-Of-Line)
-            // todo os --cpus Get host machine CPUs info (overall amount of CPUS plus model and clock rate (in GHz) for each of them)
-            // todo os --homedir Get home directory
-            // todo os --username Get current *system user name* (Do not confuse with the username that is set when the application starts)
-            // todo os --architecture Get CPU architecture for which Node.js binary has compiled
+
             break;
         case 'hash':
-            // todo hash path_to_file Calculate hash for file and print it into console
+            await hash(currentDir, arg1);
             break;
         case 'compress':
             // todo compress path_to_file path_to_destination

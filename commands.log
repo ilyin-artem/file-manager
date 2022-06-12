@@ -1,1 +1,11 @@
-os --architecture
+cat modules
+hash 1.txt
+cp 1.txt 1
+cp 1.txt 2
+hash 2/1.txt
+cd 2
+ls
+hash 1.txt
+cd ..
+ls
+hash README.md

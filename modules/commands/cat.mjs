@@ -5,7 +5,10 @@ import { isDirectory } from '../isDirectory.mjs';
 
 export const cat = async (currentDir, file) => {
     const FileName = (await isAbsolute(file)) ? file : join(currentDir, file);
-    if (await isDirectory(FileName)) messageFailed();
+    if (await isDirectory(FileName)) {
+        messageFailed();
+        return;
+    }
     await catFile(FileName);
 };
 
