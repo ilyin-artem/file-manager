@@ -28,10 +28,9 @@ export const compress = async (
 };
 
 const compressBrotli = async (fileSource, fileTarget) => {
-    const inputFilePath = join(fileSource);
     const outputFilePath = join(fileTarget, parse(fileSource).base + '.br');
 
-    const readable = createReadStream(inputFilePath);
+    const readable = createReadStream(fileSource);
     const writable = createWriteStream(outputFilePath);
     try {
         if (!(await isDirectory(fileTarget))) throw 'Dest not directory';

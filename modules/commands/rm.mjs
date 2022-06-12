@@ -1,4 +1,4 @@
-import { unlink } from 'fs/promises';
+import { rm as remove } from 'fs/promises';
 import { join, isAbsolute } from 'path';
 import { isDirectory } from '../isDirectory.mjs';
 import { checkFileExists } from '../checkFileExists.mjs';
@@ -30,7 +30,7 @@ const deleteFile = async (folderSource) => {
         else {
             // if file
 
-            await unlink(folderSource);
+            await remove(folderSource);
             messageFileSuccess('removed', folderSource);
         }
     } catch (error) {

@@ -1,18 +1,15 @@
-import { createWriteStream } from 'fs';
-import { EOL } from 'os';
+import { EOL, homedir } from 'os';
 import process from 'process';
 import readline from 'readline';
 import { stdin, stdout, stderr } from 'process';
-import { dirname, join } from 'path';
-import { fileURLToPath } from 'url';
 import { parseArgs } from './modules/args.mjs';
 import { doCommand } from './modules/doCommand.mjs';
+import { messageFailed } from './modules/messages.mjs';
 
 const userName = parseArgs();
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+
 // const fileName = join(__dirname, './commands.log');
-let currentDir = __dirname;
+let currentDir = homedir();
 
 const messageHello = `Welcome to the File Manager, ${userName}!${EOL}${EOL}`;
 const messageBye = `Thank you for using File Manager, ${userName}!${EOL}`;
@@ -32,21 +29,29 @@ const rl = readline
         output: stdout,
         terminal: false,
     })
-    .on('error', (err) => console.log(err));
+    .on('error', () => messageFailed());
 
 rl.on('line', async function (line) {
-    const commandArr = line.split(' ');
-    const command = commandArr[0];
-    const arg1 = commandArr[1];
-    const arg2 = commandArr[2];
-    //todo Сделать проверку на аргумент в кавычках e.g. "Programm files"
-    // console.log(command);
-    // console.log(commandArr.length);
-    // console.log(arg1);
-    // console.log(arg2);
-    currentDir = await doCommand(command, currentDir, arg1, arg2);
-    currentDirMsg();
-    // ws.write(`${line}${EOL}`);
+    try {
+        const commandArr = line.match(/(?:[^\s"']+|['"][^'"]*["'])+/g);
+        if (!commandArr) throw 'err';
+
+        const command = commandArr[0];
+
+        const arg1 = commandArr[1]
+            ? commandArr[1].replace(/^["'](.+(?=["']$))["']$/, '$1')
+            : undefined;
+
+        const arg2 = commandArr[2]
+            ? commandArr[2].replace(/^["'](.+(?=["']$))["']$/, '$1')
+            : undefined;
+
+        currentDir = await doCommand(command, currentDir, arg1, arg2);
+        currentDirMsg();
+    } catch (error) {
+        console.log('Invalid input');
+        currentDirMsg();
+    }
 });
 
 process.on('SIGINT', () => {

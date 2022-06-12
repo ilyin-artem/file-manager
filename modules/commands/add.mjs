@@ -10,10 +10,8 @@ export const add = async (currentDir, file) => {
 
 const createFile = async (file) => {
     try {
-        const writingStream = createWriteStream(file, { flags: 'a' });
-        stdin.on('data', (chunk) => {
-            writingStream.write(chunk);
-        });
+        const writingStream = createWriteStream(file);
+
         messageFileSuccess('created', file);
     } catch (error) {
         messageFailed();

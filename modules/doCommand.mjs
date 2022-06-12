@@ -19,7 +19,6 @@ export const doCommand = async (command, currentDir, arg1, arg2) => {
             currentDir = await up(currentDir);
             break;
         case 'cd':
-            //todo add abosoulute path
             currentDir = await cd(currentDir, arg1);
             break;
         case 'ls':
