@@ -10,6 +10,8 @@ import { mv } from './commands/mv.mjs';
 import { rm } from './commands/rm.mjs';
 import { cmdOs as os } from './commands/os.mjs';
 import { hash } from './commands/hash.mjs';
+import { compress } from './commands/compress.mjs';
+import { decompress } from './commands/decompress.mjs';
 
 export const doCommand = async (command, currentDir, arg1, arg2) => {
     switch (command) {
@@ -49,10 +51,10 @@ export const doCommand = async (command, currentDir, arg1, arg2) => {
             await hash(currentDir, arg1);
             break;
         case 'compress':
-            // todo compress path_to_file path_to_destination
+            await compress(currentDir, arg1, arg2);
             break;
         case 'decompress':
-            // todo decompress path_to_file path_to_destination
+            await decompress(currentDir, arg1, arg2);
             break;
         case '.exit':
             process.exit();

@@ -1,2 +1,0 @@
-hash 1.txt
-hash modules
