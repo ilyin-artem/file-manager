@@ -1,7 +1,5 @@
-import { readdir, mkdir, unlink } from 'fs/promises';
-import { createReadStream, createWriteStream } from 'fs';
-import { join, isAbsolute, dirname, basename } from 'path';
-
+import { unlink } from 'fs/promises';
+import { join, isAbsolute } from 'path';
 import { isDirectory } from '../isDirectory.mjs';
 import { checkFileExists } from '../checkFileExists.mjs';
 import { messageFailed, messageFileSuccess } from '../messages.mjs';

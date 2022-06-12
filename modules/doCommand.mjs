@@ -1,3 +1,4 @@
+import process from 'process';
 import { list } from './commands/list.mjs';
 import { up } from './commands/up.mjs';
 import { cd } from './commands/cd.mjs';
@@ -7,6 +8,8 @@ import { rn } from './commands/rn.mjs';
 import { cp } from './commands/cp.mjs';
 import { mv } from './commands/mv.mjs';
 import { rm } from './commands/rm.mjs';
+import { cmdOs as os } from './commands/os.mjs';
+
 export const doCommand = async (command, currentDir, arg1, arg2) => {
     switch (command) {
         case 'up':
@@ -39,6 +42,7 @@ export const doCommand = async (command, currentDir, arg1, arg2) => {
             break;
         case 'os':
             // todo os
+            await os(arg1);
             // todo os --EOL Get EOL (default system End-Of-Line)
             // todo os --cpus Get host machine CPUs info (overall amount of CPUS plus model and clock rate (in GHz) for each of them)
             // todo os --homedir Get home directory

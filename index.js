@@ -1,4 +1,5 @@
 import { createWriteStream } from 'fs';
+import { EOL } from 'os';
 import process from 'process';
 import readline from 'readline';
 import { stdin, stdout, stderr } from 'process';
@@ -13,11 +14,11 @@ const __dirname = dirname(__filename);
 const fileName = join(__dirname, './commands.log');
 let currentDir = __dirname;
 
-const messageHello = `Welcome to the File Manager, ${userName}!\n`;
-const messageBye = `Thank you for using File Manager, ${userName}!\n`;
+const messageHello = `Welcome to the File Manager, ${userName}!${EOL}`;
+const messageBye = `Thank you for using File Manager, ${userName}!${EOL}`;
 
 const currentDirMsg = () => {
-    stdout.write(`You are currently in ${currentDir} \n`);
+    stdout.write(`You are currently in ${currentDir}${EOL}`);
 };
 
 stdout.write(messageHello);
@@ -45,7 +46,7 @@ rl.on('line', async function (line) {
     // console.log(arg2);
     currentDir = await doCommand(command, currentDir, arg1, arg2);
     currentDirMsg();
-    ws.write(`${line}\n`);
+    ws.write(`${line}${EOL}`);
 });
 
 process.on('SIGINT', () => {
